@@ -142,9 +142,28 @@
       const paid = parseFloat(paidEl.value || '0');
       const allowance = parseFloat(allowanceEl.value || '12570');
 
-      const taxable = Math.max(0, gross - allowance);
-      const due = Math.max(0, taxable * 0.20);
-      const refund = Math.max(0, paid - due);
+      let taxable = Math.max(0, gross - allowance);
+let due = 0;
+
+if (taxable <= 0) {
+  due = 0;
+} else if (taxable <= (50270 - allowance)) {
+  // tranche de base 20 %
+  due = taxable * 0.20;
+} else if (taxable <= (125140 - allowance)) {
+  // 20 % jusqu'à 50,270 puis 40 %
+  const basicBand = (50270 - allowance) * 0.20;
+  const higherBand = (taxable - (50270 - allowance)) * 0.40;
+  due = basicBand + higherBand;
+} else {
+  // 20 % jusqu'à 50,270, 40 % jusqu'à 125,140 puis 45 %
+  const basicBand = (50270 - allowance) * 0.20;
+  const higherBand = (125140 - 50270) * 0.40;
+  const additionalBand = (taxable - (125140 - allowance)) * 0.45;
+  due = basicBand + higherBand + additionalBand;
+}
+
+const refund = Math.max(0, paid - due);
 
       taxableEl.textContent = fmt(taxable);
       dueEl.textContent = fmt(due);
