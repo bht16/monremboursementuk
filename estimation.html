@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estimation de remboursement — Mon remboursement UK</title>
+  <meta name="description" content="Outil d'estimation rapide du remboursement d'impôt UK (P85) pour étudiants et jeunes diplômés." />
+  <style>
+    :root{
+      --bg:#F9FAFB; --text:#111827; --muted:#6B7280; --primary:#4F46E5; --primary-2:#6366F1; --card:#FFFFFF; --border:#E5E7EB; --ok:#10B981; --warn:#F59E0B;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"}
+    a{color:var(--primary);text-decoration:none}
+    .container{max-width:880px;margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;backdrop-filter:saturate(180%) blur(8px);background:rgba(249,250,251,.7);border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .badge{height:36px;width:36px;display:grid;place-items:center;border-radius:10px;background:var(--primary);color:#fff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;border:1px solid transparent;transition:.2s}
+    .btn:hover{background:var(--primary-2)}
+    .btn-outline{background:#fff;color:var(--primary);border:1px solid #E0E7FF}
+
+    main{padding:48px 0}
+    h1{font-size: clamp(26px, 4vw, 40px);line-height:1.1;margin:0 0 12px}
+    p.muted{color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+    label span{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+    input[type="number"], input[type="text"]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);outline:none;background:#fff}
+    input:focus{border-color:#C7D2FE; box-shadow:0 0 0 4px #EEF2FF}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .result{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .highlight{border-left:4px solid var(--primary);padding-left:12px}
+    .tag{display:inline-block;background:#EEF2FF;border:1px solid #E0E7FF;color:var(--primary);padding:6px 10px;border-radius:999px;font-weight:600}
+    .note{font-size:13px;color:var(--muted)}
+
+    footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:14px;margin-top:28px}
+    @media (max-width:860px){.row,.result{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="/" class="brand"><div class="badge">UK</div> Mon remboursement UK</a>
+      <nav><a class="btn btn-outline" href="/">← Retour à l'accueil</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Estimation de votre remboursement</h1>
+      <p class="muted">Entrez votre <strong>montant brut perçu</strong> et votre <strong>impôt PAYE payé</strong>. Nous calculons une estimation basée sur l'**allowance 2024/25 (£12 570)** et le **taux 20 %** au-delà.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <label>
+              <span>Montant brut perçu (£)</span>
+              <input id="gross" type="number" min="0" step="0.01" placeholder="ex. 15425.71" />
+            </label>
+            <label>
+              <span>Impôt PAYE payé (£)</span>
+              <input id="paid" type="number" min="0" step="0.01" placeholder="ex. 1198.20" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <span>Année fiscale</span>
+              <input id="taxyear" type="text" value="2024/25" />
+            </label>
+            <label>
+              <span>Allowance (franchise non imposable)</span>
+              <input id="allowance" type="number" min="0" step="1" value="12570" />
+            </label>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn" id="calc">Calculer</button>
+            <button class="btn btn-outline" id="reset">Réinitialiser</button>
+            <span class="tag" id="status">Prêt</span>
+          </div>
+        </div>
+
+        <div class="card highlight">
+          <h3 style="margin-top:0">Résultat estimatif</h3>
+          <div class="result">
+            <div>
+              <div class="note">Revenu imposable estimé</div>
+              <div id="taxable" style="font-size:22px;font-weight:800">£0.00</div>
+            </div>
+            <div>
+              <div class="note">Impôt dû (20% au‑delà de l'allowance)</div>
+              <div id="due" style="font-size:22px;font-weight:800">£0.00</div>
+            </div>
+            <div>
+              <div class="note">Impôt payé</div>
+              <div id="paidOut" style="font-size:22px;font-weight:800">£0.00</div>
+            </div>
+            <div>
+              <div class="note">📈 Remboursement estimé</div>
+              <div id="refund" style="font-size:26px;font-weight:900;color:var(--ok)">£0.00</div>
+            </div>
+          </div>
+          <p class="note" style="margin-top:10px">Cette estimation est indicative et ne remplace pas un calcul officiel HMRC. Elle suppose un taux de base à 20 % et n'intègre pas d'autres éléments (student loan, benefits, codes particuliers…).</p>
+          <div style="margin-top:12px">
+            <a class="btn" href="/">Continuer → Retour à l'accueil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Mon remboursement UK — Estimation indicatrice. Données non stockées.</p>
+    </div>
+  </footer>
+
+  <script>
+    const grossEl = document.getElementById('gross');
+    const paidEl = document.getElementById('paid');
+    const allowanceEl = document.getElementById('allowance');
+    const calcBtn = document.getElementById('calc');
+    const resetBtn = document.getElementById('reset');
+    const statusEl = document.getElementById('status');
+
+    const taxableEl = document.getElementById('taxable');
+    const dueEl = document.getElementById('due');
+    const paidOutEl = document.getElementById('paidOut');
+    const refundEl = document.getElementById('refund');
+
+    function fmt(n){
+      if (isNaN(n)) return '£0.00';
+      return '£' + Number(n).toFixed(2);
+    }
+
+    function calc(){
+      const gross = parseFloat(grossEl.value || '0');
+      const paid = parseFloat(paidEl.value || '0');
+      const allowance = parseFloat(allowanceEl.value || '12570');
+
+      const taxable = Math.max(0, gross - allowance);
+      const due = Math.max(0, taxable * 0.20);
+      const refund = Math.max(0, paid - due);
+
+      taxableEl.textContent = fmt(taxable);
+      dueEl.textContent = fmt(due);
+      paidOutEl.textContent = fmt(paid);
+      refundEl.textContent = fmt(refund);
+
+      statusEl.textContent = 'Calculé';
+    }
+
+    calcBtn.addEventListener('click', calc);
+    resetBtn.addEventListener('click', () => {
+      grossEl.value = '';
+      paidEl.value = '';
+      allowanceEl.value = '12570';
+      taxableEl.textContent = '£0.00';
+      dueEl.textContent = '£0.00';
+      paidOutEl.textContent = '£0.00';
+      refundEl.textContent = '£0.00';
+      statusEl.textContent = 'Prêt';
+    });
+  </script>
+</body>
+</html>
