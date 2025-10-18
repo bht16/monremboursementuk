@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test d'éligibilité — Mon remboursement UK</title>
+  <meta name="description" content="Répondez à quelques questions pour savoir si vous pouvez soumettre un P85 et demander un remboursement d'impôt UK." />
+  <style>
+    :root{--bg:#F9FAFB;--text:#111827;--muted:#6B7280;--primary:#4F46E5;--primary2:#6366F1;--border:#E5E7EB;--ok:#10B981;--warn:#F59E0B;--bad:#EF4444;--radius:14px}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--primary);text-decoration:none}
+    .container{max-width:860px;margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;backdrop-filter:saturate(180%) blur(8px);background:rgba(249,250,251,.7);border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .badge{height:36px;width:36px;display:grid;place-items:center;border-radius:10px;background:var(--primary);color:#fff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;border:1px solid transparent;transition:.2s}
+    .btn:hover{background:var(--primary2)}
+    .btn-outline{background:#fff;color:var(--primary);border:1px solid #E0E7FF}
+    main{padding:48px 0}
+    h1{font-size: clamp(26px, 4vw, 40px);line-height:1.1;margin:0 0 12px}
+    p.muted{color:var(--muted)}
+    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+    fieldset{border:none;padding:0;margin:0}
+    legend{font-weight:700;margin-bottom:8px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .q{display:flex;flex-direction:column;gap:8px;border:1px solid var(--border);border-radius:12px;padding:12px}
+    .q label{display:flex;align-items:center;gap:10px}
+    .note{font-size:13px;color:var(--muted)}
+    .result{margin-top:16px}
+    .alert{border-left:4px solid var(--primary);padding:12px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    .good{border-left-color:var(--ok)}
+    .warn{border-left-color:var(--warn)}
+    .bad{border-left-color:var(--bad)}
+    footer{border-top:1px solid var(--border);padding:28px 0;color:var(--muted);font-size:14px;margin-top:28px}
+    @media (max-width:860px){.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="/" class="brand"><div class="badge">UK</div> Mon remboursement UK</a>
+      <nav><a class="btn btn-outline" href="/">← Retour à l'accueil</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Test d’éligibilité P85</h1>
+      <p class="muted">Répondez aux questions suivantes. À la fin, nous indiquons si vous semblez <strong>éligible</strong> pour soumettre un <strong>P85</strong> à HMRC.</p>
+
+      <form id="eligForm" class="grid">
+        <div class="card">
+          <fieldset class="grid">
+            <div class="q">
+              <legend>1) Avez-vous quitté ou quitterez prochainement le Royaume-Uni définitivement ?</legend>
+              <label><input type="radio" name="quit" value="oui" required> Oui</label>
+              <label><input type="radio" name="quit" value="non"> Non</label>
+            </div>
+
+            <div class="q">
+              <legend>2) Aviez-vous l'un des contrats suivants : stage, V.I.E, CDD, CDI ?</legend>
+              <label><input type="radio" name="contract" value="oui" required> Oui</label>
+              <label><input type="radio" name="contract" value="non"> Non</label>
+            </div>
+
+            <div class="q">
+              <legend>3) Receviez-vous des fiches de paie dans le cadre de votre emploi ?</legend>
+              <label><input type="radio" name="payslips" value="oui" required> Oui</label>
+              <label><input type="radio" name="payslips" value="non"> Non</label>
+            </div>
+
+            <div class="q">
+              <legend>4) Avez-vous reçu un formulaire P45 à la fin de votre contrat ?</legend>
+              <label><input type="radio" name="p45" value="oui" required> Oui</label>
+              <label><input type="radio" name="p45" value="non"> Non</label>
+              <div class="note">(Si non, un dernier bulletin de paie peut suffire.)</div>
+            </div>
+
+            <div class="q">
+              <legend>5) Êtes-vous résident fiscal au Royaume-Uni ?</legend>
+              <label><input type="radio" name="resident" value="oui" required> Oui</label>
+              <label><input type="radio" name="resident" value="non"> Non</label>
+              <div class="note">(Si vous êtes encore résident UK, le P85 n’est généralement pas adapté.)</div>
+            </div>
+
+            <div class="q">
+              <legend>6) Avez-vous payé des impôts via PAYE (prélèvement à la source) ?</legend>
+              <label><input type="radio" name="paye" value="oui" required> Oui</label>
+              <label><input type="radio" name="paye" value="non"> Non</label>
+            </div>
+          </fieldset>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button type="submit" class="btn">Vérifier mon éligibilité</button>
+            <button type="button" id="reset" class="btn btn-outline">Réinitialiser</button>
+          </div>
+        </div>
+
+        <div class="card result">
+          <h3 style="margin-top:0">Résultat</h3>
+          <div id="out" class="alert">Répondez aux questions puis cliquez sur « Vérifier ».</div>
+          <p class="note">Ce test est indicatif. Si vous êtes indépendant (self‑employed) ou résident UK, une autre procédure peut s’appliquer (Self Assessment, etc.).</p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Mon remboursement UK — Test d’éligibilité indicatif.</p>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('eligForm');
+    const out = document.getElementById('out');
+    const resetBtn = document.getElementById('reset');
+
+    function cls(el, name, on){ el.classList.toggle(name, !!on); }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const v = (k) => (data.get(k) || '').toString().toLowerCase();
+
+      const quit = v('quit') === 'oui';
+      const contract = v('contract') === 'oui';
+      const payslips = v('payslips') === 'oui';
+      const p45 = v('p45') === 'oui';
+      const residentUK = v('resident') === 'oui';
+      const paye = v('paye') === 'oui';
+
+      // Scoring simple avec critères clés requis
+      let score = 0;
+      if (quit) score++;
+      if (contract) score++;
+      if (payslips) score++;
+      if (p45) score++; // utile mais non bloquant
+      if (paye) score++;
+
+      let message = '';
+      let level = 'warn';
+
+      if (residentUK) {
+        message = "⚠️ Vous indiquez être résident fiscal au Royaume‑Uni : le formulaire P85 n’est généralement pas adapté si vous restez résident UK.";
+        level = 'bad';
+      } else if (!quit) {
+        message = "⚠️ Vous n’avez pas encore quitté le Royaume‑Uni définitivement. Le P85 est destiné aux personnes qui partent (ou partent très prochainement).";
+        level = 'warn';
+      } else if (score >= 4) {
+        message = "✅ Vous semblez éligible pour soumettre un formulaire P85 et demander un remboursement d’impôt PAYE.";
+        level = 'good';
+      } else if (score === 3) {
+        message = "🟠 Vous pourriez être éligible, mais il manque peut‑être des éléments (ex. fiches de paie ou P45).";
+        level = 'warn';
+      } else {
+        message = "❌ D’après vos réponses, vous ne semblez pas éligible pour un P85 à ce stade.";
+        level = 'bad';
+      }
+
+      out.textContent = message;
+      out.className = 'alert';
+      cls(out, 'good', level==='good');
+      cls(out, 'warn', level==='warn');
+      cls(out, 'bad', level==='bad');
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      out.textContent = 'Répondez aux questions puis cliquez sur « Vérifier ».';
+      out.className = 'alert';
+    });
+  </script>
+</body>
+</html>
